@@ -1,0 +1,2198 @@
+-- ts file was generated at discord.gg/25ms
+
+if getgenv().Password == 'g7XvKq9mLpZtA2YwJ5NbRdC3sFH86Mo' then
+    game:GetService('StarterGui'):SetCore('ChatMakeSystemMessage', {
+        Text = '\u{fffd}\u{fffd}\u{5f61} Made by friedpotatomatoe \u{5f61}\u{2605}. \n\n Specifically made for 2595x',
+        Color = Color3.fromRGB(0, 255, 127),
+        Font = Enum.Font.GothamBlack,
+        FontSize = Enum.FontSize.Size48,
+    })
+
+    Players = game:GetService('Players')
+    LocalPlayer = Players.LocalPlayer
+    Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+    Backpack = LocalPlayer:WaitForChild('Backpack')
+
+    function ChangePos(p1, p2)
+        p1.CFrame = p1.CFrame - p1.CFrame.Position + Vector3.new(p2.X, p2.Y, p2.Z)
+    end
+    function UnfreezeCam()
+        game.Workspace.CurrentCamera.CameraSubject = Character.Humanoid
+    end
+    function FreezeCam(p3)
+        local _Part = Instance.new('Part')
+
+        _Part.Parent = workspace
+        _Part.CFrame = p3 or Character.Head.CFrame
+        game.Workspace.CurrentCamera.CameraSubject = _Part
+
+        _Part:Destroy()
+    end
+    function ChangeMeshID(p5, p6)
+        task.spawn(function()
+            pcall(function()
+                local v7 = game:GetService('InsertService'):CreateMeshPartAsync(p6, p5.CollisionFidelity, p5.RenderFidelity)
+
+                p5:ApplyMesh(v7)
+                task.wait(1)
+                v7:destroy()
+            end)
+        end)
+    end
+    function M1()
+        pcall(function()
+            local function v10(p8)
+                local v9 = {
+                    {
+                        Goal = p8,
+                        Mobile = true,
+                    },
+                }
+
+                game:GetService('Players').LocalPlayer.Character.Communicate:FireServer(unpack(v9))
+            end
+
+            v10('LeftClick')
+            v10('LeftClickRelease')
+        end)
+    end
+    function PlayAnimation(p11, p12, p13, p14)
+        PlayedAnimation = true
+
+        local u15 = p14 or false
+        local _Animation = Instance.new('Animation')
+
+        _Animation.AnimationId = p11
+
+        local u17 = Character.Humanoid.Animator:LoadAnimation(_Animation)
+
+        u17:Play()
+
+        u17.TimePosition = p13 or 0
+
+        u17:AdjustSpeed(p12 or 1)
+
+        if u15 then
+            task.spawn(function()
+                task.wait(u15)
+                u17:Stop()
+            end)
+        end
+
+        PlayedAnimation = false
+
+        return u17
+    end
+    function StopAllAnimation(p18)
+        local v19, v20, v21 = pairs(Character.Humanoid:GetPlayingAnimationTracks())
+
+        while true do
+            local v22
+
+            v21, v22 = v19(v20, v21)
+
+            if v21 == nil then
+                break
+            end
+            if v22.Animation.AnimationId ~= p18 then
+                v22:Stop()
+            end
+        end
+    end
+    function StopAnimation(p23)
+        local v24, v25, v26 = pairs(Character.Humanoid:FindFirstChildOfClass('Animator'):GetPlayingAnimationTracks())
+
+        while true do
+            local v27
+
+            v26, v27 = v24(v25, v26)
+
+            if v26 == nil then
+                break
+            end
+            if v27.Animation.AnimationId == p23 then
+                v27:Stop()
+            end
+        end
+    end
+    function PlaySound(p28, p29, p30, p31)
+        local _Sound = Instance.new('Sound')
+
+        _Sound.SoundId = p28
+        _Sound.PlaybackSpeed = p29 or 1
+        _Sound.Volume = p30 or 1
+
+        local _Part2 = Instance.new('Part')
+
+        _Part2.Anchored = true
+        _Part2.CanCollide = false
+        _Part2.Transparency = 1
+
+        local v34 = workspace
+
+        if p31 then
+            _Part2.CFrame = p31
+            _Part2.Parent = workspace
+            v34 = _Part2
+        end
+
+        _Sound.Parent = v34
+
+        _Sound:Play()
+        _Sound.Ended:Connect(function()
+            _Sound:Destroy()
+            _Part2:Destroy()
+        end)
+
+        return _Sound
+    end
+    function GetGitSoundID(p35, p36)
+        local v37 = 'sounds/' .. p36 .. '.mp3'
+
+        if not isfile(v37) then
+            writefile(v37, game:HttpGet(p35))
+        end
+
+        return (getcustomasset or getsynasset)(v37)
+    end
+    function GetClosestPlayer()
+        local _huge = math.huge
+        local v39 = next
+        local v40, v41 = game.Workspace.Live:GetChildren()
+        local v42 = nil
+
+        while true do
+            local v43
+
+            v41, v43 = v39(v40, v41)
+
+            if v41 == nil then
+                break
+            end
+            if v43.Name ~= LocalPlayer.Name and (v43:FindFirstChild('HumanoidRootPart') ~= nil and (v43:FindFirstChild('Humanoid') ~= nil and v43:FindFirstChild('Humanoid').Health > 0)) then
+                local _magnitude = (v43.HumanoidRootPart.Position - LocalPlayer.Character.HumanoidRootPart.Position).magnitude
+
+                if _magnitude < _huge then
+                    v42 = v43
+                    _huge = _magnitude
+                end
+            end
+        end
+
+        return v42
+    end
+
+    animationCallbacks = {}
+
+    game.Players.LocalPlayer.Character.Humanoid.Animator.AnimationPlayed:Connect(function(p45)
+        local _AnimationId = p45.Animation.AnimationId
+
+        if animationCallbacks[_AnimationId] and not PlayedAnimation then
+            animationCallbacks[_AnimationId](p45)
+        end
+    end)
+
+    function AddFunctionToAnimation(p47, p48)
+        animationCallbacks[p47] = p48
+    end
+
+    soundCallbacks = {}
+    trackedServices = {
+        workspace,
+        Players,
+        game:GetService('ReplicatedStorage'),
+    }
+
+    local v49, v50, v51 = pairs(trackedServices)
+
+    while true do
+        local v52
+
+        v51, v52 = v49(v50, v51)
+
+        if v51 == nil then
+            break
+        end
+
+        v52.DescendantAdded:Connect(function(p53)
+            if p53:IsA('Sound') then
+                local _SoundId = p53.SoundId
+
+                if soundCallbacks[_SoundId] and not PlayedSound then
+                    task.wait()
+                    soundCallbacks[_SoundId](p53)
+                end
+            end
+        end)
+    end
+
+    function AddFunctionToSound(p55, p56)
+        soundCallbacks[p55] = p56
+    end
+    function ChangeSkillName(p57, p58, p59)
+        local v60, v61, v62 = pairs(LocalPlayer.PlayerGui.Hotbar.Backpack.Hotbar:GetChildren())
+
+        while true do
+            local v63
+
+            v62, v63 = v60(v61, v62)
+
+            if v62 == nil then
+                break
+            end
+            if v63:FindFirstChild('Base') and (v63.Base:FindFirstChild('ToolName') and v63.Base.ToolName.Text == p57) then
+                if p58 then
+                    v63.Base.ToolName.Text = p58
+                end
+                if p59 then
+                    v63.Base.Reuse.Visible = true
+                    v63.Base.Reuse.Text = p59
+                    v63.Base.Reuse.Reuse.Text = p59
+                elseif p59 == false then
+                    v63.Base.Reuse.Visible = false
+                end
+            end
+        end
+    end
+    function CounterCounter()
+        Character.Humanoid.Animator.AnimationPlayed:Connect(function(p64)
+            if p64.Animation.AnimationId == 'rbxassetid://11343250001' then
+                task.wait(4)
+
+                local v65 = tick()
+                local _CFrame = Character.HumanoidRootPart.CFrame
+
+                FreezeCam(_CFrame)
+
+                while task.wait() and tick() - v65 < 4 do
+                    local v67 = Vector3.new(69000000, -500, 69000000)
+
+                    Character.HumanoidRootPart.CFrame = CFrame.lookAt(v67, v67 + Vector3.new(0, 1, 0))
+                    Character.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
+                end
+
+                ChangePos(Character.HumanoidRootPart, _CFrame)
+
+                Character.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
+
+                UnfreezeCam()
+
+                game.Workspace.CurrentCamera.CameraType = Enum.CameraType.Track
+            end
+        end)
+    end
+    function morphToChar(p68)
+        if p68 then
+            local v69, v70, v71 = pairs(Character:GetDescendants())
+            local v72 = {
+                Accessory = true,
+                Shirt = true,
+                Pants = true,
+                CharacterMesh = true,
+                BodyColors = true,
+            }
+
+            while true do
+                local v73
+
+                v71, v73 = v69(v70, v71)
+
+                if v71 == nil then
+                    break
+                end
+                if v72[v73.ClassName] then
+                    v73:Destroy()
+                end
+            end
+
+            local _face = Character.Head:FindFirstChild('face')
+
+            if _face then
+                _face:Destroy()
+            end
+
+            local v75, v76, v77 = pairs(p68:GetChildren())
+
+            while true do
+                local v78
+
+                v77, v78 = v75(v76, v77)
+
+                if v77 == nil then
+                    break
+                end
+                if v78:IsA('Shirt') or (v78:IsA('Pants') or v78:IsA('BodyColors')) then
+                    v78.Parent = Character
+                elseif v78:IsA('Accessory') then
+                    Character.Humanoid:AddAccessory(v78)
+                elseif v78.Name == Character.Humanoid.RigType.Name then
+                    local _CharacterMesh = v78:FindFirstChildOfClass('CharacterMesh')
+
+                    if _CharacterMesh then
+                        _CharacterMesh.Parent = Character
+                    end
+                end
+            end
+
+            local _face2 = p68:FindFirstChild('face')
+
+            if _face2 then
+                _face2.Parent = Character.Head
+            else
+                local _Decal = Instance.new('Decal')
+
+                _Decal.Name = 'face'
+                _Decal.Face = 'Front'
+                _Decal.Texture = 'rbxasset://textures/face.png'
+                _Decal.Parent = Character.Head
+            end
+
+            local _Parent = Character.Parent
+            local v83, v84, v85 = pairs(Character.HumanoidRootPart:GetChildren())
+
+            while true do
+                local v86
+
+                v85, v86 = v83(v84, v85)
+
+                if v85 == nil then
+                    break
+                end
+                if v86:IsA('BodyVelocity') then
+                    v86:Destroy()
+                end
+            end
+
+            Character.Parent = nil
+            Character.Parent = _Parent
+        end
+    end
+    function Skill(p87, p88, p89)
+        local _Tool = Instance.new('Tool')
+
+        _Tool.Name = p87
+        _Tool.RequiresHandle = false
+        _Tool.Parent = Backpack
+
+        _Tool:SetAttribute('Cooldown', p89)
+
+        local u91 = nil
+        local u92 = nil
+        local u93 = p89 or 0
+        local u94 = LocalPlayer.PlayerGui.Hotbar.Backpack.LocalScript.Cooldown:Clone()
+
+        if Backpack:GetAttribute('CustomSkills') == nil then
+            Backpack:SetAttribute('CustomSkills', -1)
+        end
+
+        Backpack:SetAttribute('CustomSkills', Backpack:GetAttribute('CustomSkills') + 1)
+
+        for v95 = 1, 13 do
+            local v96 = v95
+            local _Text = LocalPlayer.PlayerGui.Hotbar.Backpack.Hotbar[tostring(v96)].Base.ToolName.Text
+
+            if _Text == _Tool.Name then
+                u91 = LocalPlayer.PlayerGui.Hotbar.Backpack.Hotbar[tostring(v96)].Base
+                _Tool.Name = _Tool.Name .. 'ID:' .. tostring(Backpack:GetAttribute('CustomSkills'))
+                LocalPlayer.PlayerGui.Hotbar.Backpack.Hotbar[tostring(v96)].Base.ToolName.Text = _Text
+            end
+        end
+
+        u94.Parent = u91.Parent
+        u94.Size = UDim2.new(1, 0, 0, 0)
+
+        if Backpack:GetAttribute('CustomSkills') == nil then
+            Backpack:SetAttribute('CustomSkills', -1)
+        end
+
+        Backpack:SetAttribute('CustomSkills', Backpack:GetAttribute('CustomSkills') + 1)
+
+        local u98 = u91.Activated:Connect(function()
+            if not IPlacedThisForSpacing then
+                u91.Overlay.Visible = false
+
+                if u93 == 1234 or u94.Size ~= UDim2.new(1, 0, 0, 0) then
+                    if u93 == 1234 then
+                        u92 = not u92
+
+                        if u92 then
+                            u94.Size = UDim2.new(1, 0, -1, 0)
+                        else
+                            u94.Size = UDim2.new(1, 0, 0, 0)
+                        end
+
+                        p88()
+                    end
+                else
+                    u94.Size = UDim2.new(1, 0, -1, 0)
+
+                    game:GetService('TweenService'):Create(u94, TweenInfo.new(u93, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {
+                        Size = UDim2.new(1, 0, 0, 0),
+                    }):Play()
+                    p88()
+                end
+            end
+        end)
+
+        local function u100(p99)
+            return ({
+                Enum.KeyCode.Zero,
+                Enum.KeyCode.One,
+                Enum.KeyCode.Two,
+                Enum.KeyCode.Three,
+                Enum.KeyCode.Four,
+                Enum.KeyCode.Five,
+                Enum.KeyCode.Six,
+                Enum.KeyCode.Seven,
+                Enum.KeyCode.Eight,
+                Enum.KeyCode.Nine,
+            })[p99 + 1]
+        end
+
+        local u102 = game:GetService('UserInputService').InputBegan:Connect(function(p101)
+            if p101.KeyCode == u100(tostring(u91.Parent)) then
+                u91.Overlay.Visible = false
+
+                if u93 == 1234 or u94.Size ~= UDim2.new(1, 0, 0, 0) then
+                    if u93 == 1234 then
+                        u92 = not u92
+
+                        if u92 then
+                            u94.Size = UDim2.new(1, 0, -1, 0)
+                        else
+                            u94.Size = UDim2.new(1, 0, 0, 0)
+                        end
+
+                        p88()
+                    end
+                else
+                    u94.Size = UDim2.new(1, 0, -1, 0)
+
+                    game:GetService('TweenService'):Create(u94, TweenInfo.new(u93, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {
+                        Size = UDim2.new(1, 0, 0, 0),
+                    }):Play()
+                    p88()
+                end
+            end
+        end)
+        local u104 = _Tool.AncestryChanged:Connect(function(_, p103)
+            if p103 == nil then
+                u98:Disconnect()
+                u102:Disconnect()
+                PlayerDied:Disconnect()
+            elseif p103 == workspace.Live:FindFirstChild(LocalPlayer.Name) then
+                task.wait()
+
+                _Tool.Parent = Backpack
+            end
+        end)
+
+        Character.Humanoid.Died:Once(function()
+            u98:Disconnect()
+            u102:Disconnect()
+            u104:Disconnect()
+        end)
+
+        return _Tool
+    end
+    function CubicleParticle(p105, p106, p107, p108, p109, p110, p111)
+        local u112 = ({
+            'Spin',
+            'Orbital',
+            'Float',
+            'Fall',
+            'Freeze',
+        })[p110]
+        local _Part3 = Instance.new('Part')
+
+        _Part3.Anchored = true
+        _Part3.Material = Enum.Material.Neon
+        _Part3.CanCollide = false
+        _Part3.CFrame = p105 * CFrame.Angles(math.random(0, 100), math.random(0, 100), math.random(0, 100))
+        _Part3.Color = p106
+        _Part3.Size = Vector3.new(p107, p107, p107)
+        _Part3.Transparency = p108
+        _Part3.Parent = workspace
+
+        local _PointLight = Instance.new('PointLight')
+
+        _PointLight.Brightness = p109
+        _PointLight.Color = p106
+        _PointLight.Range = p107 * 5
+        _PointLight.Parent = _Part3
+
+        local u115 = true
+
+        task.spawn(function()
+            local u116 = p107 / 100
+            local u117 = p107 / 100
+            local u118 = p107 / 100
+
+            task.spawn(function()
+                pcall(function()
+                    while u115 do
+                        for _ = 1, 20 do
+                            _Part3.CFrame = _Part3.CFrame * CFrame.Angles(u116, u117, u118)
+
+                            task.wait()
+                        end
+
+                        u116 = math.random(1, 2) == 1 and p107 / 100 or -1 * p107 / 50
+                        u117 = math.random(1, 2) == 1 and p107 / 100 or -1 * p107 / 50
+                        u118 = math.random(1, 2) == 1 and p107 / 100 or -1 * p107 / 50
+                    end
+                end)
+            end)
+
+            if u112 ~= 'Spin' then
+                if u112 ~= 'Orbital' then
+                    if u112 ~= 'Float' then
+                        if u112 ~= 'Fall' then
+                            if u112 == 'Freeze' then
+                                u115 = false
+                                _Part3.CFrame = p105
+                            end
+                        else
+                            task.spawn(function()
+                                pcall(function()
+                                    while task.wait() do
+                                        _Part3.Position = _Part3.Position - Vector3.new(0, p107 / 20, 0)
+                                    end
+                                end)
+                            end)
+                        end
+                    else
+                        task.spawn(function()
+                            pcall(function()
+                                while task.wait() do
+                                    _Part3.Position = _Part3.Position + Vector3.new(0, p107 / 20, 0)
+                                end
+                            end)
+                        end)
+                    end
+                else
+                    task.spawn(function()
+                        pcall(function()
+                            local v119 = 0
+
+                            while task.wait() do
+                                v119 = v119 + math.rad(5)
+
+                                local v120 = p107 * 3 * math.cos(v119)
+                                local v121 = p107 * 3 * math.sin(v119)
+
+                                _Part3.Position = p105.Position + Vector3.new(v120, 0, v121)
+                            end
+                        end)
+                    end)
+                end
+            end
+        end)
+
+        if p111 > 0.2 then
+            task.spawn(function()
+                task.wait(p111 - 0.2)
+
+                _Part3.Size = Vector3.new(p107, p107, p107)
+
+                game:GetService('TweenService'):Create(_Part3, TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut), {
+                    Size = Vector3.new(0.1, 0.1, 0.1),
+                }):Play()
+            end)
+        else
+            _Part3.Size = Vector3.new(p107, p107, p107)
+
+            game:GetService('TweenService'):Create(_Part3, TweenInfo.new(p111, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut), {
+                Size = Vector3.new(0.1, 0.1, 0.1),
+            }):Play()
+        end
+
+        task.spawn(function()
+            task.wait(p111)
+            _Part3:Destroy()
+
+            _Part3 = nil
+
+            _PointLight:Destroy()
+
+            _PointLight = nil
+        end)
+
+        return _Part3
+    end
+    function AddWings(p122)
+        local function u126(p123, p124)
+            local _WeldConstraint = Instance.new('WeldConstraint')
+
+            _WeldConstraint.Part0 = p123
+            _WeldConstraint.Part1 = p124
+            _WeldConstraint.Parent = p123
+        end
+        local function v140(p127)
+            local _Part4 = Instance.new('Part')
+
+            _Part4.Name = 'PrimaryPart'
+            _Part4.Size = Vector3.new(1, 1, 1)
+            _Part4.Transparency = 1
+            _Part4.Anchored = true
+            _Part4.CanCollide = false
+
+            local v129 = Vector3.new(0, 0, 0)
+            local v130, v131, v132 = pairs(p127:GetDescendants())
+
+            while true do
+                local v133
+
+                v132, v133 = v130(v131, v132)
+
+                if v132 == nil then
+                    break
+                end
+                if v133:IsA('BasePart') then
+                    v129 = v129 + v133.Position
+                end
+            end
+
+            local v134 = v129 / #p127:GetDescendants()
+
+            _Part4.CFrame = CFrame.new(v134)
+            _Part4.CFrame = _Part4.CFrame + _Part4.CFrame.LookVector - Vector3.new(0, 2, 0)
+            _Part4.Parent = p127
+            p127.PrimaryPart = _Part4
+
+            local v135, v136, v137 = pairs(p127:GetDescendants())
+            local v138 = 0
+
+            while true do
+                local v139
+
+                v137, v139 = v135(v136, v137)
+
+                if v137 == nil then
+                    break
+                end
+                if v139:IsA('BasePart') and v139 ~= _Part4 then
+                    if v138 % 200 == 0 then
+                        task.wait()
+                    end
+
+                    v139.Anchored = false
+
+                    u126(_Part4, v139)
+                end
+            end
+
+            return _Part4
+        end
+
+        local _Model = Instance.new('Model', p122)
+
+        _Model.Name = 'Wings'
+
+        local function v146(p142, p143, p144)
+            local _Part5 = Instance.new('Part')
+
+            _Part5.Anchored = true
+            _Part5.Color = p142
+            _Part5.Size = p143
+            _Part5.CFrame = p144
+            _Part5.CanCollide = false
+            _Part5.Massless = true
+            _Part5.CastShadow = false
+            _Part5.Material = Enum.Material.Neon
+            _Part5.Parent = _Model
+        end
+
+        v146(Color3.new(1, 0.941176, 0.439216), Vector3.new(1, 0.05000000447034836, 0.502471923828125), CFrame.new(360.732727, -6.197299, -49.303627, -0.965898514, 0.0000423174351, 0.258920968, 0.0244072285, 0.995562017, 0.0908878744, -0.257768035, 0.0941080004, -0.961612821))
+        v146(Color3.new(1, 0.941176, 0.439216), Vector3.new(1, 0.05000000447034836, 0.502471923828125), CFrame.new(362.347412, -5.99922276, -51.3982925, 0.499970257, -0.0000145807862, -0.866042674, -0.0815577209, 0.995555043, -0.0471004248, 0.862193882, 0.0941812694, 0.497746766))
+        v146(Color3.new(1, 0.941176, 0.439216), Vector3.new(1, 0.05000000447034836, 0.502471923828125), CFrame.new(361.821869, -6.18379402, -49.4464188, -0.866021514, -0.0000258088112, -0.500006795, -0.0471151285, 0.995554745, 0.0815529451, 0.497782022, 0.0941844806, -0.86217308))
+        v146(Color3.new(1, 0.941176, 0.439216), Vector3.new(1, 0.05000000447034836, 0.502471923828125), CFrame.new(360.386688, -5.94976997, -51.9213333, 0.866021514, -0.0000258088112, 0.500006795, 0.0471151285, 0.995554745, -0.0815529451, -0.497782022, 0.0941844806, 0.86217308))
+        v146(Color3.new(1, 0.941176, 0.439216), Vector3.new(1, 0.05000000447034836, 0.502471923828125), CFrame.new(361.475861, -5.93627071, -52.064064, 0.965898514, 0.0000423174351, -0.258920968, -0.0244072285, 0.995562017, -0.0908878744, 0.257768035, 0.0941080004, 0.96161288))
+        v146(Color3.new(1, 0.941176, 0.439216), Vector3.new(1.9999998807907104, 0.6044883728027344, 0.3155517578125), CFrame.new(364.306915, -7.25881386, -49.3042679, -0.970375419, -0.136544615, 0.19931677, -0.139339149, 0.990244746, 6.54347241e-6, -0.197373271, -0.0277662762, -0.979935169))
+        v146(Color3.new(1, 0.941176, 0.439216), Vector3.new(1.0474975109100342, 0.23617839813232422, 0.3155517578125), CFrame.new(365.754395, -7.00014687, -49.0098648, -0.970375419, -0.136544615, 0.19931677, -0.139339149, 0.990244746, 6.54347241e-6, -0.197373271, -0.0277662762, -0.979935169))
+        v146(Color3.new(1, 0.941176, 0.439216), Vector3.new(1.0474975109100342, 0.23617839813232422, 0.3155517578125), CFrame.new(365.689423, -5.78818512, -49.0230179, -0.915372968, -0.349710763, 0.199486494, -0.356892884, 0.934145331, -0.0000470206141, -0.186332941, -0.0712383538, -0.979900599))
+        v146(Color3.new(1, 0.941176, 0.439216), Vector3.new(1.9999998807907104, 0.6044883728027344, 0.3155517578125), CFrame.new(364.335052, -6.3700676, -49.2987137, -0.915372968, -0.349710763, 0.199486494, -0.356892884, 0.934145331, -0.0000470206141, -0.186332941, -0.0712383538, -0.979900599))
+        v146(Color3.new(1, 0.941176, 0.439216), Vector3.new(1.9999998807907104, 0.6044883728027344, 0.3155517578125), CFrame.new(357.901642, -7.25881386, -49.3042679, -0.970375419, 0.136544615, -0.19931677, 0.139339149, 0.990244746, 6.54347241e-6, 0.197373271, -0.0277662762, -0.979935169))
+        v146(Color3.new(1, 0.941176, 0.439216), Vector3.new(1.0474975109100342, 0.23617839813232422, 0.3155517578125), CFrame.new(365.689423, -9.60411167, -49.0230179, 0.915372849, -0.349710763, 0.199486494, -0.356892884, -0.934145331, 0.0000470206141, 0.186332941, -0.0712383538, -0.979900599))
+        v146(Color3.new(1, 0.941176, 0.439216), Vector3.new(1.9999998807907104, 0.6044883728027344, 0.3155517578125), CFrame.new(364.335052, -9.02222729, -49.2987137, 0.915372849, -0.349710763, 0.199486494, -0.356892884, -0.934145331, 0.0000470206141, 0.186332941, -0.0712383538, -0.979900599))
+        v146(Color3.new(1, 0.941176, 0.439216), Vector3.new(1.9999998807907104, 0.6044883728027344, 0.3155517578125), CFrame.new(364.306915, -8.13348198, -49.3042679, 0.970375419, -0.136544615, 0.19931677, -0.139339149, -0.990244746, -6.54347241e-6, 0.197373271, -0.0277662762, -0.979935169))
+        v146(Color3.new(1, 0.941176, 0.439216), Vector3.new(1.0474975109100342, 0.23617839813232422, 0.3155517578125), CFrame.new(365.754395, -8.39214802, -49.0098648, 0.970375419, -0.136544615, 0.19931677, -0.139339149, -0.990244746, -6.54347241e-6, 0.197373271, -0.0277662762, -0.979935169))
+        v146(Color3.new(1, 0.941176, 0.439216), Vector3.new(1, 0.05000000447034836, 0.502471923828125), CFrame.new(359.861328, -6.13433266, -49.9694595, -0.499970794, -0.0000145807862, 0.866042674, 0.0815577209, 0.995555043, 0.0471004248, -0.862193882, 0.0941812694, -0.497747183))
+        v146(Color3.new(1, 0.941176, 0.439216), Vector3.new(1, 0.05000000447034836, 0.502471923828125), CFrame.new(362.490662, -6.10175323, -50.3140335, -0.258897305, -0.0000377446413, -0.965904891, -0.0909474716, 0.995558262, 0.0243382938, 0.961613595, 0.0941477269, -0.25775075))
+        v146(Color3.new(1, 0.941176, 0.439216), Vector3.new(1.0474975109100342, 0.23617839813232422, 0.3155517578125), CFrame.new(356.454163, -8.39214802, -49.0098648, 0.970375419, 0.136544615, -0.19931677, 0.139339149, -0.990244746, -6.54347241e-6, -0.197373271, -0.0277662762, -0.979935169))
+        v146(Color3.new(1, 0.941176, 0.439216), Vector3.new(1.9999998807907104, 0.6044883728027344, 0.3155517578125), CFrame.new(357.901642, -8.13348198, -49.3042679, 0.970375419, 0.136544615, -0.19931677, 0.139339149, -0.990244746, -6.54347241e-6, -0.197373271, -0.0277662762, -0.979935169))
+        v146(Color3.new(1, 0.941176, 0.439216), Vector3.new(1.9999998807907104, 0.6044883728027344, 0.3155517578125), CFrame.new(357.873505, -9.02222729, -49.2987137, 0.915372849, 0.349710763, -0.199486494, 0.356892884, -0.934145331, 0.0000470206141, -0.186332941, -0.0712383538, -0.979900599))
+        v146(Color3.new(1, 0.941176, 0.439216), Vector3.new(1.0474975109100342, 0.23617839813232422, 0.3155517578125), CFrame.new(356.519135, -9.60411167, -49.0230179, 0.915372849, 0.349710763, -0.199486494, 0.356892884, -0.934145331, 0.0000470206141, -0.186332941, -0.0712383538, -0.979900599))
+        v146(Color3.new(1, 0.941176, 0.439216), Vector3.new(1.9999998807907104, 0.6044883728027344, 0.3155517578125), CFrame.new(357.873505, -6.3700676, -49.2987137, -0.915372968, 0.349710763, -0.199486494, 0.356892884, 0.934145331, -0.0000470206141, 0.186332941, -0.0712383538, -0.979900599))
+        v146(Color3.new(1, 0.941176, 0.439216), Vector3.new(1.0474975109100342, 0.23617839813232422, 0.3155517578125), CFrame.new(356.519135, -5.78818512, -49.0230179, -0.915372968, 0.349710763, -0.199486494, 0.356892884, 0.934145331, -0.0000470206141, 0.186332941, -0.0712383538, -0.979900599))
+        v146(Color3.new(1, 0.941176, 0.439216), Vector3.new(1.0474975109100342, 0.23617839813232422, 0.3155517578125), CFrame.new(356.454163, -7.00014687, -49.0098648, -0.970375419, 0.136544615, -0.19931677, 0.139339149, 0.990244746, 6.54347241e-6, 0.197373271, -0.0277662762, -0.979935169))
+        v146(Color3.new(1, 0.941176, 0.439216), Vector3.new(1, 0.05000000447034836, 0.502471923828125), CFrame.new(362.119202, -5.971241, -51.6942825, 0.707077563, 2.72318721e-6, -0.707135975, -0.066594556, 0.995555937, -0.0665852129, 0.703993261, 0.0941723138, 0.703935385))
+        v146(Color3.new(1, 0.941176, 0.439216), Vector3.new(1, 0.05000000447034836, 0.502471923828125), CFrame.new(360.089355, -6.16232491, -49.6735306, -0.707077622, 2.72318721e-6, 0.707135975, 0.066594556, 0.995555937, 0.0665852129, -0.703993261, 0.0941723138, -0.703935504))
+        v146(Color3.new(1, 0.941176, 0.439216), Vector3.new(1, 0.05000000447034836, 0.502471923828125), CFrame.new(362.119202, -6.16232586, -49.6734695, -0.707143664, -7.12648034e-6, -0.707069993, -0.0665914416, 0.995555937, 0.0665883273, 0.703927279, 0.0941723138, -0.704001546))
+        v146(Color3.new(1, 0.941176, 0.439216), Vector3.new(1, 0.05000000447034836, 0.502471923828125), CFrame.new(362.539612, -6.06677437, -50.683876, -0.0000977516174, -4.60445881e-6, -1.00000012, -0.0941393524, 0.995559037, 4.60445881e-6, 0.995559096, 0.0941393524, -0.0000977516174))
+        v146(Color3.new(1, 0.941176, 0.439216), Vector3.new(1, 0.05000000447034836, 0.502471923828125), CFrame.new(360.089355, -5.97123909, -51.694313, 0.707143545, -7.12648034e-6, 0.707069993, 0.0665914416, 0.995555937, -0.0665883273, -0.703927279, 0.0941723138, 0.704001427))
+        v146(Color3.new(1, 0.941176, 0.439216), Vector3.new(1, 0.05000000447034836, 0.502471923828125), CFrame.new(361.10437, -5.93165874, -52.1128922, 1, -4.06851314e-6, -0.0000862260786, -4.06851314e-6, 0.995557189, -0.0941588804, 0.0000862260786, 0.0941588804, 0.995557189))
+        v146(Color3.new(1, 0.941176, 0.439216), Vector3.new(0.5, 0.05000000447034836, 0.502471923828125), CFrame.new(361.104279, -6.06690311, -50.6826248, -1, -4.06851314e-6, 0.0000862260786, 4.06851314e-6, 0.995557189, 0.0941588804, -0.0000862260786, 0.0941588804, -0.995557189))
+        v146(Color3.new(1, 0.941176, 0.439216), Vector3.new(1, 0.05000000447034836, 0.502471923828125), CFrame.new(361.104187, -6.20190048, -49.2549515, -1, -4.06851314e-6, 0.0000862260786, 4.06851314e-6, 0.995557189, 0.0941588804, -0.0000862260786, 0.0941588804, -0.995557189))
+        v146(Color3.new(1, 0.941176, 0.439216), Vector3.new(1, 0.05000000447034836, 0.502471923828125), CFrame.new(359.668945, -6.06677151, -50.6840286, 0.0000976324081, -4.60445881e-6, 1, 0.0941393375, 0.995559037, -4.60445881e-6, -0.995558977, 0.0941393375, 0.0000976324081))
+        v146(Color3.new(1, 0.941176, 0.439216), Vector3.new(1, 0.05000000447034836, 0.502471923828125), CFrame.new(359.717896, -6.03180504, -51.0537796, 0.258897305, -0.0000377446413, 0.965904891, 0.0909474716, 0.995558262, -0.0243382938, -0.961613595, 0.0941477269, 0.25775075))
+
+        local v147 = v140(_Model)
+
+        v147.CFrame = p122.HumanoidRootPart.CFrame
+        v147.Anchored = false
+
+        u126(p122.HumanoidRootPart, v147)
+
+        v147.Massless = true
+
+        p122.Humanoid.Died:Once(function()
+            _Model:destroy()
+        end)
+
+        return _Model
+    end
+    function Collusion(p148, p149)
+        if p148:IsA('Basepart') then
+            if p148:GetAttribute('OldCollusion') ~= nil then
+                p148:SetAttribute('OldCollusion', p148.CanCollide)
+            end
+
+            p148.CanCollide = false
+        end
+
+        local v150, v151, v152 = pairs(p148:GetDescendants())
+
+        while true do
+            local v153
+
+            v152, v153 = v150(v151, v152)
+
+            if v152 == nil then
+                break
+            end
+            if v153:IsA('Basepart') then
+                if v153:GetAttribute('OldCollusion') ~= nil then
+                    v153:SetAttribute('OldCollusion', v153.CanCollide)
+                end
+
+                v153.CanCollide = p149
+            end
+        end
+
+        return p148
+    end
+    function UndoCollusion(p154)
+        if p154:IsA('Basepart') and p154:GetAttribute('OldCollusion') ~= nil then
+            p154.CanCollide = p154:GetAttribute('OldCollusion')
+
+            p154:SetAttribute('OldCollusion', nil)
+        end
+
+        local v155, v156, v157 = pairs(p154:GetDescendants())
+
+        while true do
+            local v158
+
+            v157, v158 = v155(v156, v157)
+
+            if v157 == nil then
+                break
+            end
+            if v158:IsA('Basepart') and v158:GetAttribute('OldCollusion') ~= nil then
+                v158.CanCollide = p154:GetAttribute('OldCollusion')
+
+                v158:SetAttribute('OldCollusion', nil)
+            end
+        end
+
+        return p154
+    end
+    function HitParticle2(p159)
+        local _Part6 = Instance.new('Part', p159.HumanoidRootPart)
+
+        _Part6.CanCollide = false
+        _Part6.Transparency = 1
+        _Part6.Massless = true
+        _Part6.CFrame = p159.HumanoidRootPart.CFrame - Vector3.new(0, 0.7, 0) + CFrame.lookAt(p159.HumanoidRootPart.Position, LocalPlayer.Character.HumanoidRootPart.Position).LookVector * 2
+
+        (function(p161, p162)
+            local _WeldConstraint2 = Instance.new('WeldConstraint')
+
+            _WeldConstraint2.Part0 = p161
+            _WeldConstraint2.Part1 = p162
+            _WeldConstraint2.Parent = p161
+        end)(p159.HumanoidRootPart, _Part6)
+
+        for _ = 1, 10 do
+            local v164 = {
+                _Part6,
+                'rbxassetid://7845168136',
+                0,
+                1,
+                Color3.new(250, 250, 250),
+                Color3.new(250, 250, 250),
+                10,
+                0.2,
+                0,
+                0,
+                -360,
+                360,
+                -10,
+                -10,
+                2,
+                0,
+                0.3,
+                0.3,
+                1,
+            }
+
+            EmitParticle(v164)
+        end
+        for _ = 1, 5 do
+            local v165 = {
+                _Part6,
+                'rbxassetid://7845168136',
+                0,
+                1,
+                Color3.new(250, 250, 250),
+                Color3.new(250, 250, 250),
+                10,
+                0.2,
+                0,
+                0,
+                -360,
+                360,
+                -30,
+                -30,
+                2,
+                0,
+                0.3,
+                0.3,
+                1,
+            }
+
+            EmitParticle(v165)
+        end
+
+        local v166 = {
+            _Part6,
+            'rbxassetid://16668936898',
+            0,
+            2,
+            Color3.new(130, 0, 0),
+            Color3.new(130, 0, 0),
+            1,
+            0.2,
+            -360,
+            360,
+            10,
+            10,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+        }
+
+        EmitParticle(v166)
+
+        for _ = 1, 5 do
+            local v167 = {
+                _Part6,
+                'rbxassetid://241576804',
+                0,
+                0.5,
+                Color3.new(100, 0, 0),
+                Color3.new(130, 0, 0),
+                10,
+                0.5,
+                0,
+                0,
+                -360,
+                360,
+                5,
+                10,
+                2,
+                10,
+                0,
+                0,
+                0,
+            }
+
+            EmitParticle(v167)
+        end
+        for _ = 1, 10 do
+            local v168 = {
+                _Part6,
+                'rbxassetid://4509687978',
+                0,
+                0.2,
+                Color3.new(100, 0, 0),
+                Color3.new(100, 0, 0),
+                10,
+                0.5,
+                0,
+                0,
+                -360,
+                360,
+                5,
+                10,
+                2,
+                4,
+                0,
+                0,
+                0,
+            }
+
+            EmitParticle(v168)
+        end
+
+        local v169 = {
+            _Part6,
+            'http://www.roblox.com/asset/?id=7541669000',
+            0,
+            2,
+            Color3.new(250, 250, 250),
+            Color3.new(250, 250, 250),
+            1,
+            0.2,
+            -360,
+            360,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0.3,
+            0.3,
+            1,
+        }
+
+        EmitParticle(v169)
+
+        local v170 = {
+            _Part6,
+            'http://www.roblox.com/asset/?id=7919757890',
+            0,
+            1,
+            Color3.new(250, 250, 250),
+            Color3.new(250, 250, 250),
+            1,
+            0.2,
+            -360,
+            360,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0.3,
+            0.3,
+            1,
+        }
+
+        EmitParticle(v170)
+
+        local v171 = {
+            _Part6,
+            'http://www.roblox.com/asset/?id=7919579655',
+            1,
+            2,
+            Color3.new(250, 250, 250),
+            Color3.new(250, 250, 250),
+            1,
+            0.2,
+            -360,
+            360,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            1,
+        }
+
+        EmitParticle(v171)
+
+        local v172 = {
+            _Part6,
+            'http://www.roblox.com/asset/?id=10198439352',
+            0,
+            2,
+            Color3.new(250, 250, 250),
+            Color3.new(250, 250, 250),
+            1,
+            0.2,
+            -360,
+            360,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0.3,
+            0.3,
+            1,
+        }
+
+        EmitParticle(v172)
+    end
+    function HurtParticle(p173, p174, p175)
+        StrongMone = Instance.new('Attachment')
+
+        game.Debris:AddItem(StrongMone, 3)
+
+        Shockwaves2 = Instance.new('ParticleEmitter')
+        Shockwaves3 = Instance.new('ParticleEmitter')
+        DustShockwaves = Instance.new('ParticleEmitter')
+        RedDust2 = Instance.new('ParticleEmitter')
+        Push = Instance.new('ParticleEmitter')
+        StrongMone.Name = 'StrongMone'
+
+        local _Part7 = Instance.new('Part')
+
+        _Part7.Anchored = true
+        _Part7.CanCollide = false
+        _Part7.Transparency = 1
+        _Part7.CFrame = p174.CFrame - p174.Position + p173.Position
+
+        if p175 then
+            _Part7.CFrame = CFrame.lookAt(p173.Position, p173.Position + p175)
+        end
+
+        _Part7.Parent = workspace
+        StrongMone.Parent = _Part7
+        Shockwaves2.Color = ColorSequence.new({
+            ColorSequenceKeypoint.new(0, Color3.new(0.466667, 0.470588, 0.470588), 0),
+            ColorSequenceKeypoint.new(0.495, Color3.new(0, 0, 0), 0),
+            ColorSequenceKeypoint.new(1, Color3.new(0, 0, 0), 0),
+        })
+        Shockwaves2.Drag = 5
+        Shockwaves2.EmissionDirection = Enum.NormalId.Back
+        Shockwaves2.Enabled = false
+
+        Shockwaves2:Emit(15)
+
+        Shockwaves2.FlipbookFramerate = NumberRange.new(18, 20)
+        Shockwaves2.Lifetime = NumberRange.new(1, 3)
+        Shockwaves2.LightEmission = 1
+        Shockwaves2.Orientation = Enum.ParticleOrientation.VelocityPerpendicular
+        Shockwaves2.Rate = 40
+        Shockwaves2.RotSpeed = NumberRange.new(100, 400)
+        Shockwaves2.Rotation = NumberRange.new(0, 360)
+        Shockwaves2.Size = NumberSequence.new({
+            NumberSequenceKeypoint.new(0, 0, 0),
+            NumberSequenceKeypoint.new(0.1, 5.11184, 1.94737),
+            NumberSequenceKeypoint.new(0.2, 8.93842, 3.89474),
+            NumberSequenceKeypoint.new(0.3, 11.1292, 7.78947),
+            NumberSequenceKeypoint.new(0.517, 15.7153, 11.6842),
+            NumberSequenceKeypoint.new(1, 20.4474, 11.6842),
+        })
+        Shockwaves2.Speed = NumberRange.new(0.0146053, 0.0146053)
+        Shockwaves2.SpreadAngle = Vector2.new(2, 2)
+        Shockwaves2.Texture = 'http://www.roblox.com/asset/?id=11703233149'
+        Shockwaves2.Transparency = NumberSequence.new({
+            NumberSequenceKeypoint.new(0, 0.8, 0.2),
+            NumberSequenceKeypoint.new(1, 1, 0),
+        })
+        Shockwaves2.Name = 'Shockwaves2'
+        Shockwaves2.Parent = StrongMone
+        Shockwaves3.Color = ColorSequence.new({
+            ColorSequenceKeypoint.new(0, Color3.new(0.466667, 0.470588, 0.470588), 0),
+            ColorSequenceKeypoint.new(0.495, Color3.new(0, 0, 0), 0),
+            ColorSequenceKeypoint.new(1, Color3.new(0, 0, 0), 0),
+        })
+        Shockwaves3.Drag = 5
+        Shockwaves3.EmissionDirection = Enum.NormalId.Back
+        Shockwaves3.Enabled = false
+        Shockwaves3.FlipbookFramerate = NumberRange.new(18, 20)
+        Shockwaves3.Lifetime = NumberRange.new(0.5, 0.5)
+        Shockwaves3.LightEmission = 1
+        Shockwaves3.Orientation = Enum.ParticleOrientation.VelocityPerpendicular
+        Shockwaves3.Rate = 55
+
+        Shockwaves3:Emit(15)
+
+        Shockwaves3.RotSpeed = NumberRange.new(100, 400)
+        Shockwaves3.Rotation = NumberRange.new(0, 360)
+        Shockwaves3.Size = NumberSequence.new({
+            NumberSequenceKeypoint.new(0, 0, 0),
+            NumberSequenceKeypoint.new(0.1, 10.2237, 3.89474),
+            NumberSequenceKeypoint.new(0.2, 17.8768, 7.78947),
+            NumberSequenceKeypoint.new(0.3, 22.2584, 15.5789),
+            NumberSequenceKeypoint.new(0.517, 31.4305, 23.3684),
+            NumberSequenceKeypoint.new(1, 40.8947, 23.3684),
+        })
+        Shockwaves3.Speed = NumberRange.new(0.0146053, 0.0146053)
+        Shockwaves3.Texture = 'http://www.roblox.com/asset/?id=11703233149'
+        Shockwaves3.Transparency = NumberSequence.new({
+            NumberSequenceKeypoint.new(0, 0.8, 0.2),
+            NumberSequenceKeypoint.new(1, 1, 0),
+        })
+        Shockwaves3.Name = 'Shockwaves3'
+        Shockwaves3.Parent = StrongMone
+        DustShockwaves.Brightness = 5
+        DustShockwaves.Color = ColorSequence.new({
+            ColorSequenceKeypoint.new(0, Color3.new(0.988312, 0.991241, 1), 0),
+            ColorSequenceKeypoint.new(1, Color3.new(0, 0, 0), 0),
+        })
+        DustShockwaves.Drag = 5
+        DustShockwaves.EmissionDirection = Enum.NormalId.Back
+        DustShockwaves.Enabled = false
+        DustShockwaves.FlipbookFramerate = NumberRange.new(18, 20)
+        DustShockwaves.Lifetime = NumberRange.new(0.2, 1.05)
+        DustShockwaves.LightEmission = 1
+        DustShockwaves.Orientation = Enum.ParticleOrientation.VelocityPerpendicular
+        DustShockwaves.Rate = 25
+        DustShockwaves.Rotation = NumberRange.new(0, 360)
+        DustShockwaves.Size = NumberSequence.new({
+            NumberSequenceKeypoint.new(0, 0, 0),
+            NumberSequenceKeypoint.new(1, 58.421, 0),
+        })
+        DustShockwaves.Speed = NumberRange.new(0.0146053, 0.0146053)
+        DustShockwaves.SpreadAngle = Vector2.new(10, 10)
+        DustShockwaves.Texture = 'http://www.roblox.com/asset/?id=11703216487'
+        DustShockwaves.Transparency = NumberSequence.new({
+            NumberSequenceKeypoint.new(0, 0.96, 0.04),
+            NumberSequenceKeypoint.new(1, 1, 0),
+        })
+        DustShockwaves.Name = 'DustShockwaves'
+        DustShockwaves.Parent = StrongMone
+
+        DustShockwaves:Emit(15)
+
+        RedDust2.Color = ColorSequence.new({
+            ColorSequenceKeypoint.new(0, Color3.new(0.988235, 0.988235, 0.988235), 0),
+            ColorSequenceKeypoint.new(1, Color3.new(0.988235, 0.988235, 0.988235), 0),
+        })
+        RedDust2.Drag = 4
+        RedDust2.EmissionDirection = Enum.NormalId.Back
+        RedDust2.Enabled = false
+        RedDust2.Lifetime = NumberRange.new(0.1, 1)
+        RedDust2.LightEmission = 0.800000011920929
+        RedDust2.Orientation = Enum.ParticleOrientation.VelocityParallel
+        RedDust2.Rate = 40
+        RedDust2.Size = NumberSequence.new({
+            NumberSequenceKeypoint.new(0, 0, 0),
+            NumberSequenceKeypoint.new(0.281, 2.91889, 2.74074),
+            NumberSequenceKeypoint.new(1, 7.30263, 3.89474),
+        })
+        RedDust2.Speed = NumberRange.new(18.75, 90)
+        RedDust2.SpreadAngle = Vector2.new(25, 25)
+        RedDust2.Squash = NumberSequence.new({
+            NumberSequenceKeypoint.new(0, -0.5, 0.5),
+            NumberSequenceKeypoint.new(1, -1, 1),
+        })
+        RedDust2.Texture = 'rbxassetid://7216854921'
+        RedDust2.Transparency = NumberSequence.new({
+            NumberSequenceKeypoint.new(0, 0, 0),
+            NumberSequenceKeypoint.new(0.339323, 0, 0),
+            NumberSequenceKeypoint.new(0.80798, 0.3625, 0),
+            NumberSequenceKeypoint.new(1, 1, 0),
+        })
+        RedDust2.Name = 'RedDust2'
+        RedDust2.Parent = StrongMone
+
+        RedDust2:Emit(15)
+
+        Push.Brightness = 2
+        Push.Drag = 10
+        Push.EmissionDirection = Enum.NormalId.Back
+        Push.Enabled = false
+        Push.FlipbookFramerate = NumberRange.new(30, 30)
+        Push.FlipbookLayout = Enum.ParticleFlipbookLayout.Grid4x4
+        Push.FlipbookMode = Enum.ParticleFlipbookMode.OneShot
+        Push.Lifetime = NumberRange.new(0.1, 0.5)
+        Push.Rate = 115
+        Push.RotSpeed = NumberRange.new(-35, 35)
+        Push.Rotation = NumberRange.new(-25, 25)
+        Push.Size = NumberSequence.new({
+            NumberSequenceKeypoint.new(0, 2.36514, 0.8125),
+            NumberSequenceKeypoint.new(0.632135, 12.9375, 0),
+            NumberSequenceKeypoint.new(1, 12.9375, 0),
+        })
+        Push.Speed = NumberRange.new(0, 375)
+        Push.SpreadAngle = Vector2.new(-15, 15)
+        Push.Texture = 'http://www.roblox.com/asset/?id=9160490836'
+        Push.Transparency = NumberSequence.new({
+            NumberSequenceKeypoint.new(0, 1, 0),
+            NumberSequenceKeypoint.new(1, 0.9375, 0.0625),
+        })
+        Push.ZOffset = 1
+        Push.Name = 'Push'
+        Push.Parent = StrongMone
+
+        Push:Emit(15)
+        task.spawn(function()
+            task.wait(1.5)
+            _Part7:destroy()
+        end)
+    end
+    function AddHitbox(p177)
+        local _HumanoidRootPart = p177:FindFirstChild('HumanoidRootPart')
+
+        if _HumanoidRootPart then
+            local _Part8 = Instance.new('Part')
+
+            _Part8.Size = Vector3.new(5, 8, 5)
+            _Part8.Transparency = 0.7
+            _Part8.Color = Color3.fromRGB(255, 0, 0)
+            _Part8.Material = Enum.Material.Neon
+            _Part8.CanCollide = false
+            _Part8.Massless = true
+            _Part8.Anchored = false
+            _Part8.Parent = p177
+            _Part8.CFrame = _HumanoidRootPart.CFrame + Vector3.new(0, _Part8.Size.Y / 2 - 5, 0)
+
+            local _WeldConstraint3 = Instance.new('WeldConstraint')
+
+            _WeldConstraint3.Part0 = _HumanoidRootPart
+            _WeldConstraint3.Part1 = _Part8
+            _WeldConstraint3.Parent = _Part8
+
+            return _Part8
+        end
+    end
+    function UnfreezeCam()
+        game.Workspace.CurrentCamera.CameraSubject = Character.Humanoid
+    end
+    function FreezeCam(p181)
+        local _Part9 = Instance.new('Part')
+
+        _Part9.Parent = workspace
+        _Part9.CFrame = p181 or Character.Head.CFrame
+        game.Workspace.CurrentCamera.CameraSubject = _Part9
+
+        _Part9:Destroy()
+    end
+    function MoveDirection2()
+        local _Humanoid = Character.Humanoid
+        local v184 = Vector3.new(_Humanoid.MoveDirection.X, 0, _Humanoid.MoveDirection.Z)
+
+        if v184.Magnitude <= 0 then
+            return Vector3.new(0, 0, 0)
+        else
+            return v184.Unit
+        end
+    end
+    function MoveDirection3()
+        local _Humanoid2 = Character.Humanoid
+        local _CurrentCamera = workspace.CurrentCamera
+        local v187 = Vector3.new(_Humanoid2.MoveDirection.X, 0, _Humanoid2.MoveDirection.Z)
+
+        if v187.Magnitude <= 0 then
+            return Vector3.new(0, 0, 0)
+        end
+
+        local _Unit = Vector3.new(_CurrentCamera.CFrame.RightVector.X, 0, _CurrentCamera.CFrame.RightVector.Z).Unit
+        local v189 = -(math.atan2(v187.Z, v187.X) - math.atan2(_Unit.Z, _Unit.X)) % (2 * math.pi)
+
+        return (_CurrentCamera.CFrame.LookVector * math.sin(v189) + _CurrentCamera.CFrame.RightVector * math.cos(v189)).Unit
+    end
+    function CameraOrigin()
+        local _CurrentCamera2 = workspace.CurrentCamera
+
+        return _CurrentCamera2.CFrame - _CurrentCamera2.CFrame.Position + _CurrentCamera2.Focus.Position
+    end
+    function ChangeWalkAnim(p191, p192)
+        RunWalkSpeed = 25
+
+        local u193 = nil
+
+        Character.Humanoid.Animator.AnimationPlayed:Connect(function(p194)
+            if p194.Animation.AnimationId == 'rbxassetid://7815618175' then
+                p194:Stop()
+
+                if not u193 then
+                    u193 = PlayAnimation(p191, p192)
+
+                    repeat
+                        task.wait()
+                    until Character.Humanoid.WalkSpeed ~= RunWalkSpeed or MoveDirection2().Magnitude == 0
+
+                    u193:Stop()
+
+                    u193 = false
+                end
+            end
+        end)
+
+        Character.Animate.walk.WalkAnim.AnimationId = p191
+
+        Character.Humanoid.Animator.AnimationPlayed:Connect(function(p195)
+            if p195.Animation == Character.Animate.walk.WalkAnim then
+                p195:AdjustSpeed(p192)
+            end
+        end)
+    end
+    function ChangeIdleAnim(p196, p197, p198, p199, p200, p201)
+        Character.Animate.idle.Animation1.AnimationId = p196
+
+        local u202 = p201 or 1
+
+        Character.Humanoid.Animator.AnimationPlayed:Connect(function(p203)
+            if p203.Animation == Character.Animate.idle.Animation1 then
+                p203.TimePosition = p198
+
+                p203:AdjustSpeed(p197)
+                task.wait(p199)
+
+                if p200 then
+                    local _TimePosition = p203.TimePosition
+
+                    while task.wait() do
+                        repeat
+                            task.wait()
+                        until p203.TimePosition > _TimePosition + p200
+
+                        p203:AdjustSpeed(-u202)
+
+                        repeat
+                            task.wait()
+                        until p203.TimePosition < _TimePosition - p200
+
+                        p203:AdjustSpeed(u202)
+                    end
+                else
+                    p203:AdjustSpeed(0)
+                end
+            end
+        end)
+    end
+    function FakeDash(p205)
+        local _BodyVelocity = Instance.new('BodyVelocity')
+
+        _BodyVelocity.MaxForce = Vector3.new(50000, 0, 50000)
+        _BodyVelocity.P = 1250
+
+        local function u209(p207)
+            local _Unit2 = Vector3.new(Character.HumanoidRootPart.CFrame.RightVector.X, 0, Character.HumanoidRootPart.CFrame.RightVector.Z).Unit
+
+            if p205 ~= 'Right' then
+                if p205 == 'Left' then
+                    _BodyVelocity.Velocity = -_Unit2 * p207
+                end
+            else
+                _BodyVelocity.Velocity = _Unit2 * p207
+            end
+        end
+
+        _BodyVelocity.Parent = Character.HumanoidRootPart
+
+        Character.Communicate:FireServer({
+            Dash = Enum.KeyCode.A,
+            Key = Enum.KeyCode.Q,
+            Goal = 'KeyPress',
+        })
+        task.spawn(function()
+            local v210 = tick()
+            local v211 = 0.47
+            local v212 = 166
+            local v213 = 14
+
+            while task.wait() and tick() - v210 < v211 do
+                local v214 = (tick() - v210) / v211
+
+                u209(v213 + (v212 - v213) * math.exp(-3 * v214))
+            end
+
+            _BodyVelocity:Destroy()
+        end)
+    end
+    function ResetCharacter()
+        task.spawn(function()
+            local _CFrame2 = Character.HumanoidRootPart.CFrame
+            local u216 = false
+            local u217 = false
+
+            local function u219()
+                local _Part10 = Instance.new('Part', workspace)
+
+                _Part10.CFrame = _CFrame2
+                game.Workspace.CurrentCamera.CameraSubject = _Part10
+
+                _Part10:destroy()
+            end
+
+            Character.Humanoid.Died:Connect(function()
+                u216 = true
+                u217 = true
+
+                task.wait()
+                u219()
+            end)
+
+            local v220 = u219
+
+            while not u217 do
+                u216 = false
+
+                local u221 = true
+
+                task.spawn(function()
+                    task.wait(0.5)
+
+                    u221 = false
+                end)
+
+                local u222 = u216
+                local v223 = u221
+
+                while task.wait() and v223 do
+                    v220()
+
+                    local v224 = CFrame.new(0, 0, 0)
+
+                    local function v225()
+                        return math.random(-100000, 100000)
+                    end
+
+                    Character.HumanoidRootPart.CFrame = v224 + Vector3.new(v225(), 69000, v225())
+                end
+
+                task.spawn(function()
+                    task.wait(0.5)
+
+                    u222 = true
+                end)
+
+                while task.wait() and not u222 do
+                    v220()
+
+                    Character.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(0, 0, 0).Unit)
+                end
+            end
+        end)
+    end
+    function EmitParticle(p226)
+        local v227, v228, v229, v230, v231, v232, v233, u234, v235, v236, v237, v238, v239, v240, v241, v242, v243, v244, v245 = table.unpack(p226)
+        local _ParticleEmitter = Instance.new('ParticleEmitter')
+
+        _ParticleEmitter.Shape = Enum.ParticleEmitterShape.Sphere
+        _ParticleEmitter.ShapeStyle = Enum.ParticleEmitterShapeStyle.Surface
+        _ParticleEmitter.Rate = 0
+        _ParticleEmitter.LockedToPart = true
+        _ParticleEmitter.Parent = v227
+        _ParticleEmitter.Texture = v228
+        _ParticleEmitter.Size = NumberSequence.new({
+            NumberSequenceKeypoint.new(0, v229),
+            NumberSequenceKeypoint.new(1, v230),
+        })
+        _ParticleEmitter.Color = ColorSequence.new(v231, v232)
+        _ParticleEmitter.TimeScale = v233
+        _ParticleEmitter.Lifetime = NumberRange.new(u234)
+        _ParticleEmitter.Rotation = NumberRange.new(v235, v236)
+        _ParticleEmitter.SpreadAngle = Vector2.new(v237, v238)
+        _ParticleEmitter.Speed = NumberRange.new(v239, v240)
+        _ParticleEmitter.Orientation = ({
+            Enum.ParticleOrientation.FacingCamera,
+            Enum.ParticleOrientation.VelocityParallel,
+            Enum.ParticleOrientation.FacingCameraWorldUp,
+            Enum.ParticleOrientation.VelocityPerpendicular,
+        })[v241] or Enum.ParticleOrientation.FacingCamera
+        _ParticleEmitter.Acceleration = Vector3.new(0, -v242 * 10, 0)
+        _ParticleEmitter.Transparency = NumberSequence.new({
+            NumberSequenceKeypoint.new(0, v243),
+            NumberSequenceKeypoint.new(1, v244),
+        })
+        _ParticleEmitter.LightEmission = v245
+
+        task.spawn(function()
+            task.wait()
+            _ParticleEmitter:Emit(1)
+            task.wait(u234)
+            _ParticleEmitter:Destroy()
+        end)
+
+        return _ParticleEmitter
+    end
+    function AddFunctionToSpawn(p247, p248)
+        task.spawn(function()
+            while p247.CharacterAdded:Wait() do
+                p248()
+            end
+        end)
+    end
+
+    Ignore = '  \nCamera Functions  \n- UnfreezeCam() \u{2013} Resets the camera to follow the player.  \n- FreezeCam(cFrame) \u{2013} Locks the camera at a specific position.  \n- CameraOrigin() \u{2013} Returns the camera\u{2019}s original position (CFrame).  \n\nCharacter & Movement  \n- ChangePos(Part, Position) \u{2013} Moves a part without changing its orientation.  \n- ChangeWalkAnim(ID) \u{2013} Updates the walk animation.  \n- ChangeIdleAnim(ID, Speed, StartTime, StopTime, LoopedTime, LoopedSpeed) \u{2013} Updates the idle animation.  \n- MoveDirection2() \u{2013} Returns movement direction in 2D (Vector3).  \n- MoveDirection3() \u{2013} Returns movement direction in 3D (Vector3).  \n- MorphToChar(char) \u{2013} Morphs the character to another\'s appearance.  \n- AddWings(char) \u{2013} Adds wings to the character.  \n- AddHitbox(char) \u{2013} Adds a hitbox to the character.  \n- FakeDash(Direction) \u{2013} Direction can be "Left" or "Right".  \n- ResetCharacter() \u{2013} Forces the character to reset.  \n- EmitParticle(Properties) \u{2013} Creates a particle effect with given properties. Properties is a table: {parent, texture, size1, size2, color1, color2, speed, lifespan, rotation1, rotation2, spreadAngle1, spreadAngle2, spreadSpeed1, spreadSpeed2, orientation, gravity, transparency1, transparency2, lightEmission}.  \n- AddFunctionToSpawn(Player, callback) \u{2013} Adds a function that runs when a player respawns.  \n\nAnimation & Effects  \n- PlayAnimation(ID, Speed, StartTime, StopTime) \u{2013} Plays an animation with adjustable settings.  \n- StopAnimation(ID) \u{2013} Stops a specific animation.  \n- StopAllAnimation() \u{2013} Stops all animations.  \n- AddFunctionToAnimation(anim, callback) \u{2013} Triggers a callback when an animation plays.  \n- CounterCounter() \u{2013} Anti-Saitama counter.  \n- CubicleParticle(cFrame, color, size, transparency, brightness, typeIndex, lifespan) \u{2013} Creates neon particles with custom behavior.  \n- HurtParticle(rootPart, hitterRootPart, offset) \u{2013} Generates a hit effect based on impact direction.  \n- HitParticle2(Character) \u{2013} Generates a hit effect on character.  \n\nSkills & Abilities  \n- Skill(SkillName, callback, Cooldown) \u{2013} Creates a custom skill with cooldown.  \n- ChangeSkillName(OldName, NewName) \u{2013} Renames a skill in the hotbar.  \n\nSound & Audio  \n- PlaySound(ID, Speed, Volume, Position) \u{2013} Plays a sound with adjustable settings.  \n- AddFunctionToSound(sound, callback) \u{2013} Triggers a callback when a sound plays.  \n- GetGitSoundID(GithubSnd, SoundName) \u{2013} Converts a GitHub MP3 link into a playable sound ID.  \n\nCombat  \n- M1() \u{2013} Simulates a left mouse click.  \n- GetClosestPlayer() \u{2013} Finds the nearest alive player.  \n\nCollision & Physics  \n- Collusion(model, state) \u{2013} Changes collision properties for a model\u{2019}s descendants.  \n- UndoCollusion(model) \u{2013} Reverts changes made by Collusion().  \n- ChangeMeshID(mesh, id) \u{2013} Changes a mesh ID.  \n'
+
+    AddFunctionToAnimation('rbxassetid://13532600125', function()
+        StopAnimation('rbxassetid://13532600125');
+        (function(p249)
+            StopAnimation('13532562418')
+            PlayAnimation('rbxassetid://136363608783208', 1, p249, 0.6)
+        end)(0.2)
+    end)
+    AddFunctionToAnimation('rbxassetid://13532604085', function()
+        StopAnimation('rbxassetid://13532604085');
+        (function(p250)
+            StopAnimation('rbxassetid://136363608783208')
+            PlayAnimation('rbxassetid://136363608783208', 1, p250, 0.6)
+        end)(0.9)
+    end)
+    AddFunctionToAnimation('rbxassetid://13294471966', function()
+        StopAnimation('rbxassetid://136363608783208')
+        StopAnimation('rbxassetid://13294471966')
+        PlayAnimation('rbxassetid://10468665991', 1.7)
+    end)
+    AddFunctionToAnimation('rbxassetid://10470104242', function()
+        StopAnimation('rbxassetid://10470104242')
+        StopAnimation('rbxassetid://15957361339')
+        PlayAnimation('rbxassetid://12467789963', 2, 0.5, 1.5444444417953491)
+    end)
+    AddFunctionToAnimation('rbxassetid://10479335397', function()
+        StopAnimation('rbxassetid://10479335397')
+        PlayAnimation('rbxassetid://13630786846', 1, 0, 1.2333333492279053)
+    end)
+    AddFunctionToAnimation('rbxassetid://10480793962', function()
+        StopAnimation('rbxassetid://10480793962')
+        PlayAnimation('rbxassetid://17799224866', 1.5, 2)
+    end)
+    AddFunctionToAnimation('rbxassetid://10480796021', function()
+        StopAnimation('rbxassetid://10480796021')
+        PlayAnimation('rbxassetid://13501296372', 1, 0.5)
+    end)
+    AddFunctionToAnimation('rbxassetid://12272894215', function()
+        StopAnimation('rbxassetid://12272894215')
+        PlayAnimation('rbxassetid://17354976067', 2, 0.3, 0.7)
+    end)
+    AddFunctionToAnimation('rbxassetid://12273188754', function()
+        StopAnimation('rbxassetid://12273188754')
+        StopAnimation('rbxassetid://17354976067')
+        PlayAnimation('rbxassetid://17354976067', 2, 1, 2)
+        PlayAnimation('rbxassetid://14374357351', 1, 0.9, 1.5333333969116212)
+
+        local u252 = workspace.Thrown.ChildAdded:Connect(function(p251)
+            task.wait()
+
+            if p251.Name == 'Clone_Rig' then
+                p251:Destroy()
+            end
+        end)
+        local u253 = true
+
+        task.spawn(function()
+            task.wait(1.5)
+            u252:Disconnect()
+
+            u253 = false
+        end)
+
+        local _Position = Character.HumanoidRootPart.Position
+        local v255 = u253
+
+        while task.wait() and v255 do
+            _Position = _Position + Vector3.new(Character.HumanoidRootPart.CFrame.LookVector.X, 0, Character.HumanoidRootPart.CFrame.LookVector.Z).Unit * 5
+
+            ChangePos(Character.HumanoidRootPart, _Position)
+        end
+    end)
+    AddFunctionToAnimation('rbxassetid://12296882427', function()
+        StopAnimation('rbxassetid://12296882427')
+        PlayAnimation('rbxassetid://12272894215', -1, 0.7, 0.7)
+    end)
+    AddFunctionToAnimation('rbxassetid://12296113986', function()
+        StopAnimation('rbxassetid://12296113986')
+        StopAnimation('rbxassetid://12272894215')
+        task.spawn(function()
+            task.wait(1.2)
+
+            local u256 = true
+
+            task.spawn(function()
+                task.wait(0.5)
+
+                u256 = false
+            end)
+
+            OldPos = Character.HumanoidRootPart.CFrame
+
+            FreezeCam(OldPos)
+
+            while u256 do
+                local v257 = Vector3.new(69000000, -500, 69000000)
+
+                Character.HumanoidRootPart.CFrame = CFrame.lookAt(v257, v257 - Vector3.new(0, 1, 0))
+                Character.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
+
+                task.wait()
+            end
+
+            PlaySound('rbxassetid://9126102254', 1, 10, OldPos)
+            ChangePos(Character.HumanoidRootPart, OldPos)
+            UnfreezeCam()
+        end)
+        task.spawn(function()
+            Character.HumanoidRootPart:WaitForChild('moveme'):Destroy()
+
+            local u258 = true
+
+            task.spawn(function()
+                task.wait(0.7)
+
+                u258 = false
+            end)
+
+            local v259 = u258
+
+            while task.wait() and v259 do
+                ChangePos(Character.HumanoidRootPart, Character.HumanoidRootPart.CFrame + Character.HumanoidRootPart.CFrame.LookVector * 3)
+            end
+        end)
+        PlayAnimation('rbxassetid://12296113986', 1, 0, 0.7)
+        task.wait(0.7)
+        PlayAnimation('rbxassetid://14798608838', 1, 0, 2)
+    end)
+    AddFunctionToAnimation('rbxassetid://12307656616', function()
+        StopAnimation('rbxassetid://12307656616')
+        PlayAnimation('rbxassetid://12307656616', 1, 0, 0.2)
+        PlayAnimation('rbxassetid://18462892217', 1, 0, 0.7)
+    end)
+    AddFunctionToAnimation('rbxassetid://12309835105', function()
+        StopAnimation('rbxassetid://12309835105')
+        task.wait(0.4)
+        StopAnimation('rbxassetid://18462892217')
+        PlayAnimation('rbxassetid://17325254223', -2, 1.2, 1)
+    end)
+
+    local u260 = false
+
+    AddFunctionToAnimation('rbxassetid://12351854556', function()
+        StopAnimation('rbxassetid://12351854556')
+
+        u260 = false
+
+        PlayAnimation('rbxassetid://18462892217', 0.7, 0, 0.6)
+        task.wait(0.6)
+
+        if not u260 then
+            PlayAnimation('rbxassetid://18462892217', -0.7, 0.6, 0.6)
+        end
+    end)
+    AddFunctionToAnimation('rbxassetid://13603396939', function()
+        StopAnimation('rbxassetid://18462892217')
+
+        u260 = true
+
+        task.wait(2)
+        StopAnimation('rbxassetid://13603396939')
+        PlayAnimation('rbxassetid://107649573628906', -2, 2, 0.6)
+    end)
+    AddFunctionToAnimation('rbxassetid://12342141464', function()
+        StopAnimation('rbxassetid://12342141464')
+        PlayAnimation('rbxassetid://18445236460', 0.4, 0, 3)
+        task.wait(3)
+        PlayAnimation('rbxassetid://12342141464', 1, 3, 2)
+    end)
+
+    function MakeGetTrashcanSkill()
+        TrashcanSkill = Skill('Brick', function()
+            if not (UsingTrashcanSkill or Character:FindFirstChild('Trash Can')) then
+                UsingTrashcanSkill = true
+
+                local function v265()
+                    local v261, v262, v263 = pairs(workspace.Map.Trash:GetChildren())
+
+                    while true do
+                        local v264
+
+                        v263, v264 = v261(v262, v263)
+
+                        if v263 == nil then
+                            break
+                        end
+                        if not v264:GetAttribute('Broken') then
+                            return v264.Trashcan
+                        end
+                    end
+                end
+
+                if v265() then
+                    local _CFrame3 = Character.HumanoidRootPart.CFrame
+
+                    while task.wait() and not Dead and not Character:FindFirstChild('Trash Can') do
+                        FreezeCam(_CFrame3)
+
+                        _CFrame3 = _CFrame3 + Character.Humanoid.MoveDirection
+
+                        ChangePos(Character.HumanoidRootPart, v265().CFrame - Character.HumanoidRootPart.CFrame.LookVector * 5)
+
+                        Character.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
+
+                        M1()
+                    end
+
+                    local _TrashCan = Character:FindFirstChild('Trash Can')
+
+                    _TrashCan.Size = Vector3.new(11, 11, 11) * 0.4
+
+                    ChangeMeshID(_TrashCan, 'rbxassetid://6590449594')
+
+                    _TrashCan.Color = Color3.fromRGB(58, 58, 58)
+                    _TrashCan.Material = Enum.Material.Leather
+                    _TrashCan.Massless = true
+
+                    UnfreezeCam()
+                    ChangePos(Character.HumanoidRootPart, _CFrame3)
+
+                    Character.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
+
+                    task.spawn(function()
+                        while task.wait() and not Dead and Character:FindFirstChild('Trash Can') do
+                            ChangePos(Character.HumanoidRootPart, Character.HumanoidRootPart.CFrame + Character.Humanoid.MoveDirection)
+                        end
+                    end)
+                end
+
+                UsingTrashcanSkill = false
+            end
+        end, 0.7)
+    end
+    function MakePhantomBlinkSkill()
+        PhantomBlinkSkill = Skill('Teleport', function()
+            PlaySound('rbxassetid://5066021887')
+            PlayAnimation('rbxassetid://15957361339', 1, 0, 1)
+
+            if Character.Humanoid.MoveDirection.Magnitude ~= 0 then
+                local v268 = Character.HumanoidRootPart.CFrame + Character.Humanoid.MoveDirection * 50
+
+                game:GetService('TweenService'):Create(Character.HumanoidRootPart, TweenInfo.new(0.3), {CFrame = v268}):Play()
+                task.wait(0.3)
+
+                Character.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
+            elseif BackTP then
+                StopAnimation('rbxassetid://15957361339')
+
+                local v269 = Character.HumanoidRootPart.CFrame - Character.HumanoidRootPart.CFrame.LookVector * 25
+
+                game:GetService('TweenService'):Create(Character.HumanoidRootPart, TweenInfo.new(0.3), {CFrame = v269}):Play()
+                task.wait(0.3)
+
+                Character.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
+            else
+                local _HumanoidRootPart2 = Character.HumanoidRootPart
+
+                if GetClosestPlayer() then
+                    _HumanoidRootPart2 = GetClosestPlayer().HumanoidRootPart
+                end
+
+                pcall(function()
+                    _HumanoidRootPart2 = HitboxMarkTarget.HumanoidRootPart
+                end)
+
+                local v271 = os.clock()
+
+                while os.clock() - v271 < 0.3 do
+                    local v272 = game:GetService('TweenService'):Create(Character.HumanoidRootPart, TweenInfo.new(0.3 - (os.clock() - v271)), {
+                        CFrame = CFrame.new(0, 0, 0) + _HumanoidRootPart2.Position + _HumanoidRootPart2.Parent.Humanoid.MoveDirection * 5,
+                    })
+
+                    v272:Play()
+                    task.wait()
+                    v272:Cancel()
+                end
+
+                Character.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
+            end
+        end, 0.1)
+    end
+    function MakeVibralShiftSkill()
+        Invisible = false
+        VibralShiftSkill = Skill('Vibral Shift', function()
+            if Invisible then
+                Invisible = false
+            else
+                Invisible = true
+            end
+
+            local function u273()
+                if Invisible then
+                    StopAllAnimation()
+                    PlayAnimation('rbxassetid://136370737633649', 0, 4).Stopped:Once(function()
+                        if Invisible then
+                            task.wait()
+                            u273()
+                        end
+                    end)
+                end
+            end
+
+            if Invisible then
+                local u274 = Character.Head.Position - Character.HumanoidRootPart.Position
+
+                u273()
+
+                local v277 = Character.Humanoid.Animator.AnimationPlayed:Connect(function(p275)
+                    local _AnimationId2 = p275.Animation.AnimationId
+
+                    if _AnimationId2 ~= 'rbxassetid://136370737633649' and Invisible then
+                        StopAnimation(_AnimationId2)
+                    end
+                end)
+                local v278, v279, v280 = pairs(Character:GetDescendants())
+
+                while true do
+                    local v281
+
+                    v280, v281 = v278(v279, v280)
+
+                    if v280 == nil then
+                        break
+                    end
+                    if v281:IsA('BasePart') then
+                        v281.Massless = true
+
+                        if v281.Name ~= 'Trash Can' then
+                            v281:SetAttribute('OldTransparency', v281.Transparency)
+
+                            v281.Transparency = 1
+                        end
+                    end
+                end
+
+                local v283 = Character.DescendantAdded:Connect(function(p282)
+                    if p282:IsA('BasePart') then
+                        p282.Massless = true
+
+                        if p282.Name ~= 'Trash Can' then
+                            p282:SetAttribute('OldTransparency', p282.Transparency)
+
+                            p282.Transparency = 1
+                        end
+                    end
+                end)
+
+                while task.wait() and Invisible do
+                    local _LookVector = workspace.CurrentCamera.CFrame.LookVector
+                    local v285 = Vector3.new(_LookVector.X, 0, _LookVector.Z).Unit * 100
+
+                    FreezeCam(Character.HumanoidRootPart.CFrame + u274)
+
+                    Character.HumanoidRootPart.CFrame = CFrame.lookAt(Character.HumanoidRootPart.Position, Character.HumanoidRootPart.Position + v285) + Character.Humanoid.MoveDirection * 3
+
+                    CubicleParticle(Character.HumanoidRootPart.CFrame + Vector3.new(math.random(-20, 20) / 5, math.random(-20, 40) / 5, math.random(-20, 20) / 5), Color3.fromRGB(50, 0, math.random(100, 130)), math.random(100, 200) / 120, 0.7, 1, 1, 1)
+                end
+
+                v277:Disconnect()
+                StopAnimation('rbxassetid://136370737633649')
+                task.spawn(function()
+                    for _ = 1, 50 do
+                        local _LookVector2 = workspace.CurrentCamera.CFrame.LookVector
+                        local v287 = Vector3.new(_LookVector2.X, 0, _LookVector2.Z).Unit * 100
+
+                        FreezeCam(Character.HumanoidRootPart.CFrame + u274)
+
+                        Character.HumanoidRootPart.CFrame = CFrame.lookAt(Character.HumanoidRootPart.Position, Character.HumanoidRootPart.Position + v287)
+
+                        if Invisible then
+                            break
+                        end
+
+                        task.wait()
+                    end
+
+                    UnfreezeCam()
+                end)
+
+                local v288, v289, v290 = pairs(Character:GetDescendants())
+
+                while true do
+                    local v291
+
+                    v290, v291 = v288(v289, v290)
+
+                    if v290 == nil then
+                        break
+                    end
+                    if v291:IsA('BasePart') then
+                        v291.Transparency = v291:GetAttribute('OldTransparency') or v291.Transparency
+
+                        v291:SetAttribute('OldTransparency', nil)
+                    end
+                end
+
+                local v292 = tick()
+
+                repeat
+                    task.wait(0.5)
+                until tick() - v292 < 10 or Invisible
+
+                if not Invisible then
+                    v283:Disconnect()
+
+                    local v293, v294, v295 = pairs(Character:GetDescendants())
+
+                    while true do
+                        local v296
+
+                        v295, v296 = v293(v294, v295)
+
+                        if v295 == nil then
+                            break
+                        end
+                        if v296:IsA('BasePart') then
+                            v296.Massless = false
+                        end
+                    end
+                end
+            end
+        end, 0.3)
+    end
+    function MakePartialDodgeSkill()
+        PartialDodgeSkill = Skill('Ultra Instinct', function()
+            PartialDodging = not PartialDodging
+        end, 1234)
+
+        local u297 = {
+            'rbxassetid://10491993682',
+            'rbxassetid://10480796021',
+            'rbxassetid://10470389827',
+            'rbxassetid://10473655082',
+            'rbxassetid://10473655645',
+            'rbxassetid://7815618175',
+            'rbxassetid://7807831448',
+            'http://www.roblox.com/asset/?id=125750702',
+            'rbxassetid://10480793962',
+            'http://www.roblox.com/asset/?id=180436148',
+            'rbxassetid://14516273501',
+            'rbxassetid://10473654583',
+            'rbxassetid://10473653782',
+            'rbxassetid://10473655645',
+        }
+        local u298 = 20
+
+        local function u299()
+            return math.random(-1000, 1000)
+        end
+        local function u306(p300)
+            local v301, v302, v303 = pairs(p300.Humanoid:GetPlayingAnimationTracks())
+            local v304 = {}
+
+            while true do
+                local v305
+
+                v303, v305 = v301(v302, v303)
+
+                if v303 == nil then
+                    break
+                end
+
+                table.insert(v304, v305.Animation.AnimationId)
+            end
+
+            return v304
+        end
+
+        task.spawn(function()
+            while task.wait() do
+                if PartialDodging then
+                    pcall(function()
+                        local v307, v308, v309 = pairs(Players:GetChildren())
+                        local v310 = false
+
+                        while true do
+                            local v311
+
+                            v309, v311 = v307(v308, v309)
+
+                            if v309 == nil then
+                                break
+                            end
+                            if (v311.Character.HumanoidRootPart.Position - Character.HumanoidRootPart.Position).Magnitude < 20 and v311 ~= LocalPlayer then
+                                local v312, v313, v314 = pairs(u306(v311.Character))
+
+                                while true do
+                                    local v315
+
+                                    v314, v315 = v312(v313, v314)
+
+                                    if v314 == nil then
+                                        break
+                                    end
+                                    if not table.find(u297, v315) then
+                                        ChangePos(Character.HumanoidRootPart, v311.Character.HumanoidRootPart.Position + Vector3.new(u299(), Character.HumanoidRootPart.Position.Y - v311.Character.HumanoidRootPart.Position.Y, u299()).Unit * u298)
+
+                                        v310 = true
+                                    end
+                                end
+                            end
+                        end
+
+                        if v310 then
+                            PlaySound('rbxassetid://5066021887')
+                            PlayAnimation('rbxassetid://15957361339', 0.5, 0, 0.5)
+                            task.wait(0.5)
+                        end
+                    end)
+                end
+            end
+        end)
+    end
+    function MakeFlightSkill()
+        local function u317()
+            local _CurrentCamera3 = workspace.CurrentCamera
+
+            return _CurrentCamera3.CFrame - _CurrentCamera3.CFrame.Position + _CurrentCamera3.Focus.Position
+        end
+
+        local u318 = nil
+
+        FlightSkill = Skill('Flight', function()
+            u318 = not u318
+
+            if u318 then
+                local u319 = false
+                local v321 = Character.Humanoid.Animator.AnimationPlayed:Connect(function(p320)
+                    if p320.Animation.AnimationId ~= 'rbxassetid://16597322398' then
+                        p320:Stop()
+                    end
+                end)
+
+                task.spawn(function()
+                    StopAllAnimation()
+                    PlayAnimation('rbxassetid://16597322398')
+                    task.wait(0.6)
+
+                    u319 = true
+                end)
+
+                local v322 = u319
+
+                while task.wait() and u318 do
+                    ChangePos(Character.HumanoidRootPart, Character.HumanoidRootPart.CFrame + (u317().LookVector + u317().UpVector / 3))
+
+                    Character.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
+
+                    if v322 then
+                        StopAnimation('rbxassetid://16597322398')
+                        PlayAnimation('rbxassetid://16597322398', 0, 0.6)
+                    end
+                end
+
+                v321:Disconnect()
+            else
+                local u323 = true
+                local v325 = Character.Humanoid.Animator.AnimationPlayed:Connect(function(p324)
+                    if p324.Animation.AnimationId ~= 'rbxassetid://16597322398' then
+                        p324:Stop()
+                    end
+                end)
+
+                task.spawn(function()
+                    task.wait(1.5)
+
+                    u323 = false
+                end)
+                StopAnimation('rbxassetid://16597322398')
+                PlayAnimation('rbxassetid://16597322398', 0.4, 0.6)
+
+                local v326 = u323
+
+                while task.wait() and v326 do
+                    ChangePos(Character.HumanoidRootPart, Character.HumanoidRootPart.CFrame + (u317().LookVector + u317().UpVector / 3))
+
+                    Character.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
+                end
+
+                v325:Disconnect()
+            end
+        end, 1234)
+    end
+
+    repeat
+        task.wait()
+    until Backpack:FindFirstChild('Flowing Water')
+
+    CounterCounter()
+    ChangeWalkAnim('rbxassetid://15962443652', 1)
+    ChangeIdleAnim('rbxassetid://15963602367', 2, 0, 1.5, 1, 1)
+    MakePhantomBlinkSkill()
+    MakeGetTrashcanSkill()
+    MakeVibralShiftSkill()
+    MakePartialDodgeSkill()
+    MakeFlightSkill()
+    task.spawn(function()
+        while true do
+            repeat
+                task.wait()
+            until Backpack:FindFirstChild('Flowing Water')
+
+            ChangeSkillName('Flowing Water', 'Phasing Strike')
+            ChangeSkillName('Lethal Whirlwind Stream', 'Skull Crusher', 'Kill Skill')
+            ChangeSkillName("Hunter's Grasp", 'Grab Strike')
+            ChangeSkillName("Prey's Peril", 'Instinct Counter')
+
+            repeat
+                task.wait()
+            until not Backpack:FindFirstChild('Flowing Water')
+        end
+    end)
+
+    HitVfxEnabled = true
+
+    Character.Humanoid.Died:Connect(function()
+        HitVfxEnabled = false
+    end)
+
+    local v327, v328, v329 = pairs(workspace.Live:GetChildren())
+
+    while true do
+        local u330
+
+        v329, u330 = v327(v328, v329)
+
+        if v329 == nil then
+            break
+        end
+        if u330:FindFirstChild('Humanoid') then
+            u330:SetAttribute('LastHitTime', 0)
+
+            local _MaxHealth = u330.Humanoid.MaxHealth
+
+            u330.Humanoid.HealthChanged:Connect(function(p332)
+                if p332 < _MaxHealth and p332 < u330.Humanoid.MaxHealth and u330:GetAttribute('LastHit') == LocalPlayer.Name then
+                    local v333 = u330
+
+                    if os.clock() - v333:GetAttribute('LastHitTime') > 0.25 and HitVfxEnabled then
+                        HitParticle2(u330)
+                        u330:SetAttribute('LastHitTime', os.clock())
+                    end
+                end
+
+                _MaxHealth = p332
+            end)
+        end
+    end
+
+    workspace.Live.ChildAdded:Connect(function(p334)
+        p334:WaitForChild('Humanoid')
+
+        if p334:FindFirstChild('Humanoid') then
+            p334:SetAttribute('LastHitTime', 0)
+
+            local _MaxHealth2 = p334.Humanoid.MaxHealth
+
+            p334.Humanoid.HealthChanged:Connect(function(p336)
+                if p336 < _MaxHealth2 and p336 < p334.Humanoid.MaxHealth and p334:GetAttribute('LastHit') == LocalPlayer.Name then
+                    local v337 = p334
+
+                    if os.clock() - v337:GetAttribute('LastHitTime') > 0.25 and HitVfxEnabled then
+                        HitParticle2(p334)
+                        p334:SetAttribute('LastHitTime', os.clock())
+                    end
+                end
+
+                _MaxHealth2 = p336
+            end)
+        end
+    end)
+end
