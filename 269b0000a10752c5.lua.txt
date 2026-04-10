@@ -1,6 +1,6 @@
 -- ts file was generated at discord.gg/25ms
 
-if getgenv().Password == 'g7XvKq9mLpZtA2YwJ5NbRdC3sFH86Mo' then
+if if true then
     game:GetService('StarterGui'):SetCore('ChatMakeSystemMessage', {
         Text = '\u{fffd}\u{fffd}\u{5f61} Made by friedpotatomatoe \u{5f61}\u{2605}. \n\n Specifically made for 2595x',
         Color = Color3.fromRGB(0, 255, 127),
